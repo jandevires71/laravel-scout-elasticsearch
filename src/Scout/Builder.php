@@ -254,13 +254,13 @@ class Builder extends \Laravel\Scout\Builder {
 	 */
 	public function orderBy($column, $direction = 'asc', $mode = null, $options = [])
 	{
-		if (is_null($direction))
-			$this->orders[] = $column;
-		else
-			$this->orders[$column] = [
-				'order' => strtolower($direction) == 'asc' ? 'asc' : 'desc',
-				'mode' => $mode,
-			] + $options;
+	    $this->orders[$column] = ['order' => strtolower($direction) == 'asc' ? 'asc' : 'desc'];
+	    if (!is_null($mode)) {
+	       $this->orders[$column]['mode'] = $mode;
+        }
+        if (count($options)) {
+            $this->orders[$column] += $options;
+        }
 
 		return $this;
 	}

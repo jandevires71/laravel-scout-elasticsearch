@@ -217,11 +217,13 @@ class ElasticsearchEngine {
 	 */
 	protected function performSearch(Builder $builder, array $options = [])
 	{
+	    $body = $this->parseBody($builder);
+	    $body['sort'] = $builder->orders;
+    
 		$query = [
 			'index' =>  $this->index,
 			'type' =>  $builder->model->searchableAs(),
-			'body' => $this->parseBody($builder),
-			'sort' => $builder->orders,
+			'body' => $body,
 		];
 
 		if (array_key_exists('size', $options))
