@@ -56,7 +56,7 @@ class ElasticsearchEngine {
 
 			$body->push([
 				'index' => [
-					'_index' => $this->index,
+					'_index' => $model->searchableAs(),
 					'_type' => $model->searchableAs(),
 					'_id' => $model->getKey(),
 				],
@@ -84,7 +84,7 @@ class ElasticsearchEngine {
 		$models->each(function ($model) use ($body) {
 			$body->push([
 				'delete' => [
-					'_index' => $this->index,
+					'_index' => $model->searchableAs(),
 					'_type' => $model->searchableAs(),
 					'_id'  => $model->getKey(),
 				],
@@ -200,7 +200,7 @@ class ElasticsearchEngine {
 	protected function performCount(Builder $builder, array $options = [])
 	{
 		$query = [
-			'index' =>  $this->index,
+			'index' =>  $builder->model->searchableAs(),
 			'type'  =>  $builder->model->searchableAs(),
 			'body' => $this->parseBody($builder),
 		];
@@ -221,7 +221,7 @@ class ElasticsearchEngine {
 	    $body['sort'] = $builder->orders;
     
 		$query = [
-			'index' =>  $this->index,
+			'index' =>  $builder->model->searchableAs(), 
 			'type' =>  $builder->model->searchableAs(),
 			'body' => $body,
 		];
